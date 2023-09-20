@@ -14,6 +14,9 @@ in_chat::in_chat(chat_base* _cb, int _id): cb(_cb), id(_id)
 void in_chat::s_mes()   //Отправка сообщений
 {
 	mysql = cb->get_des();   //Получение дескриптора
+	std::string fname;   
+	fname = "log.txt";   //Файл логов
+	logger log;
 	char in;
 	int i;
 	while (true)
@@ -47,6 +50,7 @@ void in_chat::s_mes()   //Отправка сообщений
 					str1 = "INSERT INTO message (send_id, rec_id, text, date, status) VALUES (" + id1 + ", " + id2 + ", '" + mes + "', current_date, 1)";
 					c = str1.c_str();
 					mysql_query(mysql, c);
+					log.log_w(fname, mes);   //Запись сообщения в файл
 				}
 				else if (login == "all")
 				{
@@ -66,6 +70,7 @@ void in_chat::s_mes()   //Отправка сообщений
 								mysql_query(mysql, c);
 							}
 						}
+						log.log_w(fname, mes);   //Запись сообщения в файл
 					}
 				}
 				else
